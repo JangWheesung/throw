@@ -13,19 +13,28 @@ public class BallThrow : MonoBehaviour
     [SerializeField] float arrowSpeed;
     float deg;
 
-    bool canThrow;
+    bool canThrow = true;
+
+    Rigidbody2D ballRig;
 
     private void Awake()
     {
-        
+        ballRig = gameObject.GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
-        while (true)
+        if (canThrow)
         {
-            flyAngle = SetVector();
-            if (flyAngle != 0) Debug.Log(flyAngle); break;
+            while (true)
+            {
+                flyAngle = SetVector();
+                if (flyAngle != 0)
+                {
+                    ballRig.AddForce(new Vector2(-flyAngle, 90 - flyAngle) * 10);
+                }
+                break;
+            }
         }
     }
 
