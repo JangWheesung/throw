@@ -5,36 +5,45 @@ using UnityEngine.EventSystems;
 
 public class BallThrow : MonoBehaviour
 {
-    float flyAngle;
+    public static BallThrow instance;
+
+    [Header("Throw")]
+    [SerializeField] float throwSpeed;
+    public float jumpCount;
+    Rigidbody2D ballRig;
+    private float flyAngle;
 
     [Header("VectorArrow")]
     [SerializeField] GameObject vectorArrow;
     [SerializeField] float arrowR;
     [SerializeField] float arrowSpeed;
-    float deg;
-
-    bool canThrow = true;
-
-    Rigidbody2D ballRig;
+    private float deg;
 
     private void Awake()
     {
+        instance = this;
+
         ballRig = gameObject.GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
-        if (canThrow)
+        Throwing();
+    }
+
+    void Throwing()
+    {
+        while (true)
         {
-            while (true)
+            flyAngle = SetVector();
+            if (Input.GetKeyDown(KeyCode.Space) && jumpCount > 0)
             {
-                flyAngle = SetVector();
-                if (flyAngle != 0)
-                {
-                    ballRig.AddForce(new Vector2(-flyAngle, 90 - flyAngle) * 10);
-                }
-                break;
+                jumpCount--;
+
+                ballRig.velocity = new Vector2(0, 0);
+                ballRig.AddForce(new Vector2(-flyAngle, 90 - Mathf.Abs(flyAngle)) * throwSpeed);
             }
+            break;
         }
     }
 
@@ -45,17 +54,16 @@ public class BallThrow : MonoBehaviour
         var y = arrowR * Mathf.Cos(rag);
         vectorArrow.transform.position = transform.position + new Vector3(x, y);
         vectorArrow.transform.rotation = Quaternion.Euler(0, 0, deg * -1);
-
-        if (Input.GetKey(KeyCode.A)) deg -= arrowSpeed / 5;
-        if (Input.GetKey(KeyCode.D)) deg += arrowSpeed / 5;
+        
+        if (Input.GetKey(KeyCode.A) && deg > -89f) deg -= arrowSpeed / 5;
+        if (Input.GetKey(KeyCode.D) && deg < 89f) deg += arrowSpeed / 5;
 
         if (Input.GetKeyDown(KeyCode.Space))
-            return vectorArrow.transform.eulerAngles.z;
+        {
+            float outAngle = vectorArrow.transform.eulerAngles.z;
+            if (outAngle > 90) return -(360f - outAngle);
+            else return outAngle;
+        }
         else return 0;
-    }
-
-    void SetPower()
-    {
-
     }
 }
