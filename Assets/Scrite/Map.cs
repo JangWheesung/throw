@@ -11,10 +11,15 @@ public class Map : MonoBehaviour
     [SerializeField] GameObject[] prefab;
     GameObject[] poolingFrefab = new GameObject[16];
 
+    TrailRenderer trailRenderer;
+
     bool firstCreatMap;
+    int stage = 0;
 
     void Awake()
     {
+        trailRenderer = GameObject.FindWithTag("Ball").GetComponent<TrailRenderer>();
+
         CreateMap();
         firstCreatMap = true;
     }
@@ -22,12 +27,12 @@ public class Map : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space)) ground.SetActive(false);
-
-        if (player.transform.position.y >= 165)
+        if (player.transform.position.y >= 165 + (stage * 145))
         {
+            ++stage;
             CreateMap();
 
-            player.transform.position = new Vector2(player.transform.position.x, 11f);
+            transform.position = new Vector2(0, stage * 145);
         }
     }
 
@@ -45,7 +50,7 @@ public class Map : MonoBehaviour
                 }
                 j[i] = randomPos;
 
-                poolingFrefab[i].transform.position = new Vector2(randomPos, i * 10);
+                poolingFrefab[i].transform.position = new Vector2(randomPos, (i * 10) + (stage * 145));
                 poolingFrefab[i].transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 360));
             }
         }
