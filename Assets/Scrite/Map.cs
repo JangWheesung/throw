@@ -11,6 +11,7 @@ public class Map : MonoBehaviour
     [SerializeField] GameObject[] prefab;
     GameObject[] poolingFrefab = new GameObject[16];
 
+    BallDie ballDie;
     TrailRenderer trailRenderer;
 
     bool firstCreatMap;
@@ -18,6 +19,7 @@ public class Map : MonoBehaviour
 
     void Awake()
     {
+        ballDie = FindObjectOfType<BallDie>();
         trailRenderer = GameObject.FindWithTag("Ball").GetComponent<TrailRenderer>();
 
         CreateMap();
@@ -27,12 +29,19 @@ public class Map : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space)) ground.SetActive(false);
+
         if (player.transform.position.y >= 165 + (stage * 145))
         {
             ++stage;
             CreateMap();
 
             transform.position = new Vector2(0, stage * 145);
+        }
+
+        if (player.transform.position.y < (stage * 145))
+        {
+            BallThrow.instance.enabled = false;
+            ballDie.Die();
         }
     }
 
