@@ -9,7 +9,6 @@ public class BallThrow : MonoBehaviour
 
     [Header("Throw")]
     [SerializeField] float throwSpeed;
-    public float jumpCount;
     Rigidbody2D ballRig;
     private float flyAngle;
 
@@ -36,10 +35,8 @@ public class BallThrow : MonoBehaviour
         while (true)
         {
             flyAngle = SetVector();
-            if (Input.GetKeyDown(KeyCode.Space) && jumpCount > 0)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                jumpCount--;
-
                 ballRig.velocity = new Vector2(0, 0);
                 ballRig.AddForce(new Vector2(-flyAngle, 90 - Mathf.Abs(flyAngle)) * throwSpeed);
             }

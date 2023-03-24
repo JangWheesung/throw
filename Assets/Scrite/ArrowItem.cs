@@ -14,7 +14,6 @@ public class ArrowItem : MonoBehaviour
         Collider2D range = Physics2D.OverlapCircle(transform.position, 1, LayerMask.GetMask("Ball"));
         if (range)
         {
-            BallThrow.instance.jumpCount++;
             gameObject.SetActive(false);
         }
     }

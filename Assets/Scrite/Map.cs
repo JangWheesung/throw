@@ -6,13 +6,17 @@ public class Map : MonoBehaviour
 {
     [SerializeField] GameObject ground;
     [SerializeField] GameObject player;
+
+    [SerializeField] int gap;
     [SerializeField] GameObject[] prefab;
     GameObject[] poolingFrefab = new GameObject[16];
+
     bool firstCreatMap;
 
     void Awake()
     {
         CreateMap();
+        firstCreatMap = true;
     }
 
     void Update()
@@ -29,16 +33,13 @@ public class Map : MonoBehaviour
 
     void CreateMap()
     {
-        //x: -20, 20
-        //y: -70, 60
         if (firstCreatMap)
         {
-            //InitObject();
             int[] j = new int[16];
             for (int i = 3; i < 16; i++)
             {
                 int randomPos = Random.Range(20, -20);
-                for (; randomPos >= j[i - 1] - 7 && randomPos <= j[i - 1] + 7;)
+                for (; randomPos >= j[i - 1] - gap && randomPos <= j[i - 1] + gap;)
                 {
                     randomPos = Random.Range(20, -20);
                 }
@@ -46,7 +47,6 @@ public class Map : MonoBehaviour
 
                 poolingFrefab[i].transform.position = new Vector2(randomPos, i * 10);
                 poolingFrefab[i].transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 360));
-                //CreatePos(i, out j);
             }
         }
         else
@@ -55,7 +55,7 @@ public class Map : MonoBehaviour
             for (int i = 30; i < 160; i += 10)
             {
                 int randomPos = Random.Range(20, -20);
-                for (; randomPos >= j[(i / 10) - 1] - 7 && randomPos <= j[(i / 10) - 1] + 7;)
+                for (; randomPos >= j[(i / 10) - 1] - gap && randomPos <= j[(i / 10) - 1] + gap;)
                 {
                     randomPos = Random.Range(20, -20);
                 }
@@ -66,6 +66,5 @@ public class Map : MonoBehaviour
                 poolingFrefab[i/10] = Instantiate(prefab[Random.Range(0, prefab.Length)], popPos, popAngle);
             }
         }
-        firstCreatMap = true;
     }
 }
