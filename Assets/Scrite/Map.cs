@@ -76,7 +76,7 @@ public class Map : MonoBehaviour
 
                 poolingFrefab[i].transform.position = new Vector2(randomPos, (i * 10) + (stage * 145));
                 poolingFrefab[i].transform.rotation = Quaternion.Euler(0, 0, Random.Range(0, 360));
-                poolingFrefab[i].GetComponent<SpriteRenderer>().color = Random.ColorHSV();
+                poolingFrefab[i].GetComponent<SpriteRenderer>().color = Random.ColorHSV(0, 1, 1, 0.5f, 0.9f, 1);
             }
         }
         else
@@ -94,7 +94,7 @@ public class Map : MonoBehaviour
                 Vector2 popPos = new Vector2(randomPos, i);
                 Quaternion popAngle = Quaternion.Euler(0, 0, Random.Range(0, 360));
                 int randomObject = Random.Range(0, prefab.Length);
-                prefab[randomObject].GetComponent<SpriteRenderer>().color = Random.ColorHSV();
+                prefab[randomObject].GetComponent<SpriteRenderer>().color = Random.ColorHSV(0, 1, 1, 0.5f, 0.9f, 1);
                 poolingFrefab[i / 10] = Instantiate(prefab[randomObject], popPos, popAngle);
             }
         }
