@@ -1,15 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class BallDie : MonoBehaviour
 {
+    [SerializeField] Image image;
     [SerializeField] ParticleSystem particle;
+    [SerializeField] GameObject arrow;
+
+    new Rigidbody2D rigidbody2D;
+    new Collider2D collider2D;
+    SpriteRenderer spriteRenderer;
+    TrailRenderer trailRenderer;
+
+    private void Awake()
+    {
+        Time.timeScale = 1;
+        image.DOFade(0, 1);
+
+        rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
+        collider2D = gameObject.GetComponent<Collider2D>();
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        trailRenderer = gameObject.GetComponent<TrailRenderer>();
+    }
 
     public void Die()
     {
-
+        image.DOFade(1, 1).OnComplete(() => { SceneManager.LoadScene("Play"); });
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -18,7 +38,14 @@ public class BallDie : MonoBehaviour
         {
             Instantiate(particle, transform);
             particle.Play();
-            Invoke("Die", 1f);
+            Invoke("Die", 0.2f);
+
+            Time.timeScale = 0.5f;
+            arrow.SetActive(false);
+            rigidbody2D.gravityScale = 0;
+            collider2D.enabled = false;
+            spriteRenderer.enabled = false;
+            trailRenderer.emitting = false;
         }
     }
 }
