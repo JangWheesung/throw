@@ -32,6 +32,17 @@ public class BallDie : MonoBehaviour
         image.DOFade(1, 1).OnComplete(() => { SceneManager.LoadScene("Play"); });
     }
 
+    void DieProcess()
+    {
+        Time.timeScale = 0.5f;
+        BallThrow.instance.enabled = false;
+        arrow.SetActive(false);
+        rigidbody2D.gravityScale = 0;
+        collider2D.enabled = false;
+        spriteRenderer.enabled = false;
+        trailRenderer.emitting = false;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {   
         if (collision.transform.CompareTag("Object"))
@@ -39,13 +50,7 @@ public class BallDie : MonoBehaviour
             Instantiate(particle, transform);
             particle.Play();
             Invoke("Die", 0.2f);
-
-            Time.timeScale = 0.5f;
-            arrow.SetActive(false);
-            rigidbody2D.gravityScale = 0;
-            collider2D.enabled = false;
-            spriteRenderer.enabled = false;
-            trailRenderer.emitting = false;
+            DieProcess();
         }
     }
 }
