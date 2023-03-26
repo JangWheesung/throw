@@ -16,6 +16,10 @@ public class BallDie : MonoBehaviour
     SpriteRenderer spriteRenderer;
     TrailRenderer trailRenderer;
 
+    Map map;
+
+    public bool die;
+
     private void Awake()
     {
         Time.timeScale = 1;
@@ -25,10 +29,18 @@ public class BallDie : MonoBehaviour
         collider2D = gameObject.GetComponent<Collider2D>();
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         trailRenderer = gameObject.GetComponent<TrailRenderer>();
+
+        map = FindAnyObjectByType<Map>();
     }
 
     public void Die()
     {
+        die = true;
+
+        PlayerPrefs.SetFloat("score", map.score);
+        if(map.score > PlayerPrefs.GetFloat("best"))
+            PlayerPrefs.SetFloat("best", map.score);
+
         image.DOFade(1, 1).OnComplete(() => { SceneManager.LoadScene("Play"); });
     }
 
