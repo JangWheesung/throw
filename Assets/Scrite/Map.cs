@@ -100,7 +100,7 @@ public class Map : MonoBehaviour
         if (firstCreatMap)
         {
             int[] j = new int[16];
-            for (int i = 3; i < 16; i++)
+            for (int i = 4; i < 16; i++)
             {
                 int randomPos = Random.Range(20, -20);
                 for (; randomPos >= j[i - 1] - gap && randomPos <= j[i - 1] + gap;)
