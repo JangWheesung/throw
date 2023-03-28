@@ -7,9 +7,13 @@ using DG.Tweening;
 
 public class BallDie : MonoBehaviour
 {
+    [Header("Object")]
     [SerializeField] Image image;
     [SerializeField] ParticleSystem particle;
     [SerializeField] GameObject arrow;
+
+    [Header("Audio")]
+    [SerializeField] AudioSource dieSouce;
 
     new Rigidbody2D rigidbody2D;
     new Collider2D collider2D;
@@ -36,6 +40,7 @@ public class BallDie : MonoBehaviour
     public void Die()
     {
         die = true;
+        dieSouce.Play();
 
         PlayerPrefs.SetFloat("score", map.score);
         if(map.score > PlayerPrefs.GetFloat("best"))

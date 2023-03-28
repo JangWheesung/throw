@@ -18,6 +18,9 @@ public class BallThrow : MonoBehaviour
     [SerializeField] float arrowSpeed;
     private float deg;
 
+    [Header("Audio")]
+    [SerializeField] AudioSource jumpSouce;
+
     private void Awake()
     {
         instance = this;
@@ -37,6 +40,8 @@ public class BallThrow : MonoBehaviour
             flyAngle = SetVector();
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                jumpSouce.Play();
+
                 ballRig.velocity = new Vector2(0, 0);
                 ballRig.AddForce(new Vector2(-flyAngle, 90 - Mathf.Abs(flyAngle)) * throwSpeed);
             }
@@ -52,8 +57,8 @@ public class BallThrow : MonoBehaviour
         vectorArrow.transform.position = transform.position + new Vector3(x, y);
         vectorArrow.transform.rotation = Quaternion.Euler(0, 0, deg * -1);
         
-        if (Input.GetKey(KeyCode.A) && deg > -89f) deg -= arrowSpeed / 5;
-        if (Input.GetKey(KeyCode.D) && deg < 89f) deg += arrowSpeed / 5;
+        if (Input.GetKey(KeyCode.A) && deg > -89f) deg -= arrowSpeed;
+        if (Input.GetKey(KeyCode.D) && deg < 89f) deg += arrowSpeed;
 
         if (Input.GetKeyDown(KeyCode.Space))
         {

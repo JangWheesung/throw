@@ -20,17 +20,19 @@ public class Map : MonoBehaviour
 
     [Header("Value")]
     [SerializeField] int gap;
+    bool firstCreatMap;
+    bool gameStart;
+    int stage = 0;
+    public float score;
 
     Camera camera;
     BallDie ballDie;
-
-    bool firstCreatMap;
-    int stage = 0;
-    public float score;
+    Image pressRenderer;
 
     void Awake()
     {
         ballDie = FindObjectOfType<BallDie>();
+        pressRenderer = pressT.GetComponent<Image>();
 
         CreateMap();
         firstCreatMap = true;
@@ -38,33 +40,38 @@ public class Map : MonoBehaviour
         camera = Camera.main;
         camera.backgroundColor = Random.ColorHSV(0, 1, 0.4f, 0.6f, 0.9f, 1f);
 
-        scoreT.text = $"Score {Mathf.Floor(PlayerPrefs.GetFloat("score"))}";
+        score = PlayerPrefs.GetFloat("score");
         bestT.text = $"Best {Mathf.Floor(PlayerPrefs.GetFloat("best"))}";
 
-        nameT.rectTransform.DOMoveY(700, 1).SetEase(Ease.OutCubic)
-            .OnComplete(() =>
-            {
-                pressT.DOFade(1, 1);
-            });
+        nameT.rectTransform.DOMoveY(700, 1).SetEase(Ease.OutCubic);
     }
     
     void Update()
     {
-        if (score < player.transform.position.y && !ballDie.die)
-            score = player.transform.position.y;
-        scoreT.text = $"Score {Mathf.Floor(score)}";
-
-
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            score = 0;
+
             nameT.DOFade(0, 1);
-            pressT.DOFade(0, 1);
             bestT.DOFade(0, 1);
             scoreT.rectTransform.DOMove(new Vector2(200, 1000), 1).SetEase(Ease.OutCubic);
+
+            pressT.gameObject.SetActive(false);
             ground.SetActive(false);
         }
 
+        MapText();
+
         MapPos();
+    }
+
+    void MapText()
+    {
+        if (score < player.transform.position.y && !ballDie.die)
+            score = player.transform.position.y;
+
+        scoreT.text = $"Score {Mathf.Floor(score)}";
+        pressT.color = new Color(255, 255, 255, (Mathf.Cos(Time.time * Mathf.PI) + 1) * 0.5f);
     }
 
     void MapPos()
