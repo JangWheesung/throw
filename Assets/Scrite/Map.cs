@@ -19,6 +19,7 @@ public class Map : MonoBehaviour
     GameObject[] poolingFrefab = new GameObject[16];
 
     [Header("Value")]
+    [SerializeField] new Rigidbody2D rigidbody2D;
     [SerializeField] int gap;
     bool firstCreatMap;
     bool gameStart;
@@ -48,8 +49,9 @@ public class Map : MonoBehaviour
     
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && gameStart == false)
         {
+            gameStart = true;
             score = 0;
 
             nameT.DOFade(0, 1);
@@ -68,7 +70,9 @@ public class Map : MonoBehaviour
     void MapText()
     {
         if (score < player.transform.position.y && !ballDie.die)
+        {
             score = player.transform.position.y;
+        }
 
         scoreT.text = $"Score {Mathf.Floor(score)}";
         pressT.color = new Color(255, 255, 255, (Mathf.Cos(Time.time * Mathf.PI) + 1) * 0.5f);

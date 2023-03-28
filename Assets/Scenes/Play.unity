@@ -513,6 +513,7 @@ MonoBehaviour:
   - {fileID: 6550750020091983381, guid: 6f9f35efa01e5d8488c6ce59f584e753, type: 3}
   - {fileID: 2333757179765737618, guid: 32f7463dae37e5b439bb847a8e52ceb0, type: 3}
   - {fileID: 4504683119465921566, guid: 965343855aa65634a8658923b987a451, type: 3}
+  rigidbody2D: {fileID: 1097708697}
   gap: 7
   score: 0
 --- !u!4 &458201233
